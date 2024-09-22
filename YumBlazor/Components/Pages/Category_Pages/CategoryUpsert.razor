@@ -7,6 +7,8 @@
 
 <h4>This page is a combination of update / insert</h4>
 
+<YumBlazor.Components.Shared.BSModal></YumBlazor.Components.Shared.BSModal>
+
 @if (IsProcessing)
 {
     <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
@@ -19,7 +21,7 @@ else
         <div class="card-header bg-black bg-gradient ml-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h2 class="text-white py-2">@(Id > 0 ? "Create" : "Update")Category</h2>
+                    <h2 class="text-white py-2">@(Id == 0 ? "Create" : "Update") Category</h2>
                 </div>
             </div>
         </div>
@@ -55,7 +57,7 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    [SupplyParameterFromForm(FormName ="CategoryUpsertForm")]
+    [SupplyParameterFromForm]
     private Category Category { get; set; } = new Category();
 
     private bool IsProcessing { get; set; } = true;
@@ -93,11 +95,9 @@ else
             await _jsRuntime.ToastrSuccess("Category Updated Successfully");
         }
 
-        IsProcessing = false;
-        
+        IsProcessing = false;       
 
-        _navigationManager.NavigateTo("categorylist");
-        
+        _navigationManager.NavigateTo("categorylist");        
 
     }
 }

@@ -1,7 +1,22 @@
 ﻿@page "/"
+@using System.Globalization
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+
+<h1>@currentCultureString</h1>
+<h1>@pris1.ToString("C", CultureInfo.GetCultureInfo("en-DK")) </h1>
+<h1>@pris2.ToString("C", CultureInfo.GetCultureInfo("en-DK")) </h1>
+
+@code{
+        string currentCultureString = CultureInfo.CurrentCulture.ToString();
+
+        int pris1 = 50;
+        decimal pris2 = 50;
+        
+        // Price.ToString("C", CultureInfo.GetCultureInfo("en-DK")
+}
