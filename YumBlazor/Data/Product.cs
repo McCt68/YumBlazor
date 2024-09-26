@@ -21,15 +21,22 @@ namespace YumBlazor.Data
         // Etablishing a Foreign Key. 
         // This is referencing to the Id from the Category Model
         // It allows me to goto the CategoryId for this Product -
-        // Then I can get like CategoryId.Name / CategoryId.Price / CategoryId.PropertyName Etc.. 
+        // Then I can get like Category.Name / Category.Price / Category.PropertyName Etc.. 
         public int CategoryId { get; set; } // This is the Foreign key ??
 
         [ForeignKey("CategoryId")] // This is relating to the primary key in the Category table
         public Category Category { get; set; } // I don't think i need to annotate this when the name is the same as the object type
-        
+
 
         // With the Foreign key I think i can goto the Category property of this model -
         // And get the fields from that property like -
         // Category.Id / Category.Name / Category.FieldName etc..
+
+        // I use it in home.razor like this
+
+        /*
+         * @* string name = categoryId.Category.Name; 
+                    <p>@name</p> *@
+         * */
     }
 }

@@ -18,6 +18,7 @@ builder.Services.AddCascadingAuthenticationState();
 // When asked for ICategoryRepo, Give med the Implementation CategoryRepository
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
@@ -57,7 +58,7 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); // Comment out to avoid Certificate ??
 
 app.UseStaticFiles();
 app.UseAntiforgery();
