@@ -15,13 +15,15 @@ namespace YumBlazor.Data
 
         // / I Think this is the property i must call to access User -
         // Like ShoppingCartId.UserId.PropertyName from ASPNet User
-        public string UserId { get; set; } 
+         
         [ForeignKey("UserId")] // I Think it will always refer to the Id Column. Even i change the name here ??
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; } // Navigation Property use to represent the current user
 
-        public int ProductId { get; set; }
+        
         [ForeignKey("ProductId")] // This refers to the Primary key in Product
-        public Product Product { get; set; } // Navigation Property use to represent the Product
+        public int ProductId { get; set; }
+        public Product Product { get; set; } // Navigation Property use to reference the Product
 
 
         public int Count { get; set; }

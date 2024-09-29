@@ -4,7 +4,8 @@ namespace YumBlazor.Repository.IRepository
 {
     public interface IShoppingCartRepository
     {
-        public Task<bool> UpdateCartAsync(string userId, int prodcut, int updateBy);
+        // Returns a bool
+        public Task<bool> UpdateCartAsync(string userId, int product, int updateBy);
 
         // Retrive ShoppingCart for that user as a IEnumerable - kinda List
         public Task<IEnumerable<ShoppingCart>> GetAllAsync(string? userId); 

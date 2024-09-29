@@ -4,6 +4,10 @@
 
 @inject IProductRepository _productRepository
 @inject ICategoryRepository _categoryRepository
+@inject IShoppingCartRepository _shoppingCartRepository
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject IJSRuntime _Js
+@inject NavigationManager _navigationManager
 
 <PageTitle>Home</PageTitle>
 
@@ -41,8 +45,8 @@ else
                         <span class="nav-link @GetActiveTabClass(category.Id)"
                               href="#" style="cursor: pointer"
                               @onclick="()=>FilterProducts(category.Id)">
-                              @category.Name
-                              </span>
+                            @category.Name
+                        </span>
                     </li>
                 }
             </ul>
@@ -77,7 +81,9 @@ else
                                 <h5 class="card-title text-center lead text-success">@product.Name</h5>
                                 <p class="card-text mt-2">@((MarkupString)@product.Description)</p>
                                 <h4 class="text-center">
-                                    <i class="bi bi-cart3 btn btn-success text-right  px-5 form-control"> Add to cart</i>
+                                    <div class="m-lg-auto p-2" @onclick="() => AddOrderItem(product)">
+                                        <i class="bi bi-cart3 btn btn-success text-right  px-5 form-control"> Add to cart</i>
+                                    </div>
                                 </h4>
                             </div>
                         </div>
@@ -152,5 +158,39 @@ else
     private string GetActiveTabClass(int categoryId)
     {
         return categoryId == _selectedCategoryId ? "active" : string.Empty;
+    }
+
+    private async Task AddOrderItem(Product product)
+    {        
+        /* AuthenticationState
+         * Accessing User Information: If a user is authenticated, you can access their -
+         *  identity, claims, and roles using the User property of the AuthenticationState object. -
+         *  This allows you to customize your application's behavior based -
+         *  on the user's specific information.
+         */
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        bool authenticated = user.Identity is not null && user.Identity.IsAuthenticated; // changed from var to bool
+
+        // Make sure the user is Authenticated else redirect to loginPage
+        if (!authenticated)
+        {
+            _navigationManager.NavigateTo("account/login");
+        }
+        else
+        {
+            // Add Products to cart
+            var result = await _shoppingCartRepository
+            .UpdateCartAsync(user.FindFirst(u => u.Type.Contains("nameidentifier"))?.Value, product.Id, 1);
+
+            if(result == true)
+            {
+                _Js.ToastrSuccess("Product added to cart successfully");
+            }
+            else
+            {
+                _Js.ToastrError("Error encountered");
+            }
+        }
     }
 }

@@ -38,13 +38,46 @@ namespace YumBlazor.Repository
             // the database will fetch not only the shopping cart items -
             // but also the corresponding product details for each item.
             return await 
-                _dbContext.ShoppingCart.Where(u => u.UserId == userId).Include(u => u.Product)
+                _dbContext.ShoppingCart
+                .Where(u => u.UserId == userId).Include(u => u.Product)
                 .ToListAsync();
         }
 
-        public Task<bool> UpdateCartAsync(string userId, int prodcut, int updateBy)
+        public async Task<bool> UpdateCartAsync(string userId, int productId, int updateBy)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(userId))
+            {
+                return false;
+            }
+
+            var cart = await _dbContext.ShoppingCart
+                .FirstOrDefaultAsync(u => u.UserId == userId && u.ProductId == productId);
+            if (cart == null)
+            {
+                // If the user does not already have a product in the ShoppingCart table
+                // Then create a new row in the table (Kinda)
+                cart = new ShoppingCart
+                {
+                    UserId = userId,
+                    ProductId = productId,
+                    Count = updateBy
+                };
+
+                await _dbContext.AddAsync(cart);                
+            }
+            else
+            {
+                // If the user already has a product row  in the ShoppingCart table, then update the count
+                cart.Count += updateBy;
+
+                // If the user remove a product from his ShoppingCart row
+                if (cart.Count <= 0)
+                { 
+                    _dbContext.ShoppingCart.Remove(cart);
+                }
+            }
+            return await _dbContext.SaveChangesAsync() > 0;
+
         }
     }
 }
