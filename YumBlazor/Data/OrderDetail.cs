@@ -10,7 +10,7 @@ namespace YumBlazor.Data
 
         public OrderHeader OrderHeader { get; set; } 
 
-        public int ProductId { get; set; } // In the MOdel for Prodcut this is just called Id
+        public int ProductId { get; set; } // In the Model for Product this is just called Id
 
         public Product Product { get; set; } // Navigation Property
 
@@ -18,7 +18,8 @@ namespace YumBlazor.Data
         public int Count { get; set; }
 
         [Required]
-        public double Price { get; set; }
+        public double Price { get; set; } // original dont delete       
+
 
         [Required]
         public string ProductName { get; set; }

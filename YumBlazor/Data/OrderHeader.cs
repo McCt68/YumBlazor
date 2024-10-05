@@ -10,8 +10,8 @@ namespace YumBlazor.Data
         public string UserId { get; set; } // Who is Placing the Order
 
         [Required]
-        [Display(Name = "Order Total")]
-        public int OrderTotal { get; set; }
+        [Display(Name = "Order Total")] // I Think I had this as an integer - maybe do new migration
+        public double OrderTotal { get; set; }       // Or change back to int  
 
         [Required]
         public DateTime OrderDate { get; set; }
@@ -31,7 +31,7 @@ namespace YumBlazor.Data
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        // Navigation Property
+        // Navigation Property - I can use this if i want to get details about an order using the OrderDetails Model
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>(); 
     }
 }
